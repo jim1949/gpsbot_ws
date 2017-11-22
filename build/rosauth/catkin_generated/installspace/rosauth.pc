@@ -1,0 +1,8 @@
+prefix=/home/relaybot/gpsbot_ws/install
+
+Name: rosauth
+Description: Description of rosauth
+Version: 0.1.7
+Cflags: -I/home/relaybot/gpsbot_ws/install/include
+Libs: -L/home/relaybot/gpsbot_ws/install/lib 
+Requires: roscpp message_runtime

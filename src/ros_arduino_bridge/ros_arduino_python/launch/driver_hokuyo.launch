@@ -1,0 +1,49 @@
+<launch>
+   <param name="/use_sim_time" value="false" />
+   <node name="arduino" pkg="ros_arduino_python" type="gpsbot_driver.py" output="screen">
+      <rosparam file="$(find ros_arduino_python)/config/my_arduino_params.yaml" command="load" />
+   </node>
+
+  <arg name="node_name"             value="velocity_smoother"/>
+  <arg name="nodelet_manager_name"  value="nodelet_manager"/>
+  <arg name="config_file"           value="$(find ros_arduino_python)/config/yocs_velocity_smoother.yaml"/>
+  <arg name="raw_cmd_vel_topic"     value="cmd_vel"/>
+  <arg name="smooth_cmd_vel_topic"  value="smoother_cmd_vel"/>
+  <arg name="robot_cmd_vel_topic"   value="robot_cmd_vel"/>
+  <arg name="odom_topic"            value="odom"/>
+
+  <!-- nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager"/>
+
+  <!-- velocity smoother -->
+  <include file="$(find yocs_velocity_smoother)/launch/velocity_smoother.launch">
+    <arg name="node_name"             value="$(arg node_name)"/>
+    <arg name="nodelet_manager_name"  value="$(arg nodelet_manager_name)"/>
+    <arg name="config_file"           value="$(arg config_file)"/>
+    <arg name="raw_cmd_vel_topic"     value="$(arg raw_cmd_vel_topic)"/>
+    <arg name="smooth_cmd_vel_topic"  value="$(arg smooth_cmd_vel_topic)"/>
+    <arg name="robot_cmd_vel_topic"   value="$(arg robot_cmd_vel_topic)"/>
+    <arg name="odom_topic"            value="$(arg odom_topic)"/>
+  </include>
+
+<!--  When using an IP-connected LIDAR, populate the "ip_address" parameter with the address of the LIDAR.
+      Otherwise, leave it blank. If supported by your LIDAR, you may enable the publish_intensity
+      and/or publish_multiecho options. -->
+
+  <node name="laser_node" pkg="urg_node" type="urg_node" respawn="false" output="screen">
+    <param name="ip_address" value="192.168.0.10"/>
+    <param name="frame_id" value="laser_frame"/>
+    <param name="calibrate_time" value="false"/>
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+    <param name="angle_min" value="-1.5707963"/>
+    <param name="angle_max" value="1.5707963"/>
+  </node>
+
+  <include file="$(find gpsbot_description)/launch/gpsbot_description.launch"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser4"
+   args="0.35 0.0 0.2 0.0 0.0  0.0 base_link laser_frame 100" />
+
+</launch>
+

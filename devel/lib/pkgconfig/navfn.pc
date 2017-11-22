@@ -1,0 +1,8 @@
+prefix=/home/relaybot/gpsbot_ws/devel
+
+Name: navfn
+Description: Description of navfn
+Version: 1.12.13
+Cflags: -I/home/relaybot/gpsbot_ws/devel/include -I/home/relaybot/gpsbot_ws/src/navigation/navfn/include
+Libs: -L/home/relaybot/gpsbot_ws/devel/lib -lnavfn
+Requires: nav_core roscpp pluginlib

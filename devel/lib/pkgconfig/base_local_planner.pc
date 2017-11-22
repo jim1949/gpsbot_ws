@@ -1,0 +1,8 @@
+prefix=/home/relaybot/gpsbot_ws/devel
+
+Name: base_local_planner
+Description: Description of base_local_planner
+Version: 1.12.13
+Cflags: -I/home/relaybot/gpsbot_ws/devel/include -I/home/relaybot/gpsbot_ws/src/navigation/base_local_planner/include
+Libs: -L/home/relaybot/gpsbot_ws/devel/lib -lbase_local_planner -ltrajectory_planner_ros
+Requires: roscpp dynamic_reconfigure message_generation tf pluginlib costmap_2d nav_core angles
